@@ -8,23 +8,76 @@ Supports [JSON](http://json.org/), [JSON5](http://json5.org/), and [YAML](http:/
 [![coverage](https://coveralls.io/repos/github/ajv-validator/ajv-cli/badge.svg?branch=master)](https://coveralls.io/github/ajv-validator/ajv-cli?branch=master)
 [![gitter](https://img.shields.io/gitter/room/ajv-validator/ajv.svg)](https://gitter.im/ajv-validator/ajv)
 
-## Contents
+- [ajv-cli](#ajv-cli)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [JSON schema language and version](#json-schema-language-and-version)
+  - [Commands](#commands)
+    - [Help command](#help-command)
+    - [Validate data](#validate-data)
+      - [Parameters](#parameters)
+        - [`-s` - file name of JSON-schema](#-s---file-name-of-json-schema)
+        - [`-d` - JSON data](#-d---json-data)
+        - [`-r` - referenced schemas](#-r---referenced-schemas)
+        - [`-m` - meta-schemas](#-m---meta-schemas)
+        - [`-c` - custom keywords/formats definitions](#-c---custom-keywordsformats-definitions)
+      - [Options](#options)
+    - [Compile schemas](#compile-schemas)
+      - [Parameters](#parameters-1)
+        - [`-s` - file name(s) of JSON-schema(s)](#-s---file-names-of-json-schemas)
+        - [`-o` - output file for compiled validation function module](#-o---output-file-for-compiled-validation-function-module)
+    - [Migrate schemas](#migrate-schemas)
+      - [Parameters](#parameters-2)
+        - [`-s` - file name(s) of JSON-schema(s)](#-s---file-names-of-json-schemas-1)
+        - [`-o` - output file for migrated schema](#-o---output-file-for-migrated-schema)
+      - [Options](#options-1)
+    - [Test validation result](#test-validation-result)
+  - [Ajv options](#ajv-options)
+  - [Version History](#version-history)
+  - [Licence](#licence)
 
-- [Installation](#installation)
-- [JSON schema version](#json-schema-version)
-- Commands
-  - [Help](#help-command)
-  - [Validate data](#validate-data)
-  - [Compile schemas](#compile-schemas)
-  - [Migrate schemas](#migrate-schemas)
-  - [Test validation result](#test-validation-result)
-- [Ajv options](#ajv-options)
-- [Version History, License](#version_history)
 
 ## Installation
 
 ```sh
 npm install -g ajv-cli
+```
+
+## Usage
+
+Installed Tools (available in the docker image):
+ - ajv-cli
+ - wget
+ - curl
+
+
+For using in pipelines, e.g. gitlab use the following setup for validating the renovate config in your project:
+
+```
+variables:
+  RENOVATE_PRESETS: 'm13t_default.json backend/*.json frontend/*.json infra/*.json'
+
+Validate Config:
+  stage: test
+  image:
+    name: continuoussecuritytooling/ajv-cli:0.1.0
+    entrypoint: [""]
+  before_script:
+    - wget https://docs.renovatebot.com/renovate-schema.json
+    - ajv-cli migrate -s renovate-schema.json -o renovate-schema.json
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == 'push'
+      when: always
+  script:
+    - |
+      for file in $RENOVATE_PRESETS; do
+        if [ -f "$file" ]; then
+        	echo "Checking $file"
+          ajv-cli validate --strict=false --validate-formats=true  -c ajv-formats -s renovate-schema.json -d $file
+        fi
+      done
 ```
 
 ## JSON schema language and version
@@ -203,38 +256,38 @@ This command supports the same options and parameters as [validate](#validate-da
 
 You can pass the following [Ajv options](https://ajv.js.org/options.html):
 
-| Option | Description |
-| ------ | ----------- |
-| Strict mode |
-| `--strict=`| `true`/`false`/`log` - set all [strict mode](https://ajv.js.org/strict-mode.html) restrictions |
-| `--strict-schema=`| log on (`log`) or ignore (`false`) [strict ](https://ajv.js.org/strict-mode.html#prohibit-ignored-keywords) restrictions (the default is to log) |
-| `--strict-tuples=`| throw on (`true`) or ignore (`false`) [strict schema](https://ajv.js.org/strict-mode.html#prohibit-unconstrained-tuples) restrictions (the default is to throw) |
-| `--strict-types=`| throw on (`true`) or ignore (`false`) [strict types](https://ajv.js.org/strict-mode.html#strict-types) restrictions (the default is to log) |
-| `--strict-required=`| throw on (`true`) or log (`log`) [required properties](https://ajv.js.org/strict-mode.html#defined-required-properties) restrictions (the default is to ignore) |
-| `--allow-matching-properties`| allow `properties` [matching patterns](https://ajv.js.org/strict-mode.html#overlap-between-properties-and-patternproperties-keywords) in `patternProperties` |
-| `--allow-union-types`| allow [union types](https://ajv.js.org/strict-mode.html#union-types) |
-| `--validate-formats=false`| disable format validation |
-| Validation and reporting |
-| `--data`| use [$data references](https://ajv.js.org/guide/combining-schemas.html#data-reference) |
-| `--all-errors`| collect all validation errors |
-| `--verbose` | include schema and data in errors |
-| `--comment` | log schema `$comment`s |
-| `--inline-refs=` | referenced schemas compilation mode (true/false/\<number\>) |
-| Modify validated data |
-| `--remove-additional` | remove additional properties (true/all/failing) |
-| `--use-defaults` | replace missing properties/items with the values from default keyword |
-| `--coerce-types` | change type of data to match type keyword |
-| Advanced |
-| `--multiple-of-precision` | precision of multipleOf, pass integer number |
-| `--messages=false` | do not include text messages in errors |
-| `--loop-required=` | max size of `required` to compile to expression (rather than to loop) |
-| `--loop-enum=` | max size of `enum` to compile to expression (rather than to loop) |
-| `--own-properties` | only validate own properties (not relevant for JSON, but can have effect for JavaScript objects) |
-| Code generation |
-| `--code-es5` | generate ES5 code |
-| `--code-lines` | generate multi-line code |
-| `--code-optimize=` | disable optimization (`false`) or number of optimization passes (1 pass by default) |
-| `--code-formats=` | code to require formats object (only needed if you generate standalone code and do not use [ajv-formats](https://github.com/ajv-validator/ajv-formats)) |
+| Option                        | Description                                                                                                                                                     |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Strict mode                   |
+| `--strict=`                   | `true`/`false`/`log` - set all [strict mode](https://ajv.js.org/strict-mode.html) restrictions                                                                  |
+| `--strict-schema=`            | log on (`log`) or ignore (`false`) [strict ](https://ajv.js.org/strict-mode.html#prohibit-ignored-keywords) restrictions (the default is to log)                |
+| `--strict-tuples=`            | throw on (`true`) or ignore (`false`) [strict schema](https://ajv.js.org/strict-mode.html#prohibit-unconstrained-tuples) restrictions (the default is to throw) |
+| `--strict-types=`             | throw on (`true`) or ignore (`false`) [strict types](https://ajv.js.org/strict-mode.html#strict-types) restrictions (the default is to log)                     |
+| `--strict-required=`          | throw on (`true`) or log (`log`) [required properties](https://ajv.js.org/strict-mode.html#defined-required-properties) restrictions (the default is to ignore) |
+| `--allow-matching-properties` | allow `properties` [matching patterns](https://ajv.js.org/strict-mode.html#overlap-between-properties-and-patternproperties-keywords) in `patternProperties`    |
+| `--allow-union-types`         | allow [union types](https://ajv.js.org/strict-mode.html#union-types)                                                                                            |
+| `--validate-formats=false`    | disable format validation                                                                                                                                       |
+| Validation and reporting      |
+| `--data`                      | use [$data references](https://ajv.js.org/guide/combining-schemas.html#data-reference)                                                                          |
+| `--all-errors`                | collect all validation errors                                                                                                                                   |
+| `--verbose`                   | include schema and data in errors                                                                                                                               |
+| `--comment`                   | log schema `$comment`s                                                                                                                                          |
+| `--inline-refs=`              | referenced schemas compilation mode (true/false/\<number\>)                                                                                                     |
+| Modify validated data         |
+| `--remove-additional`         | remove additional properties (true/all/failing)                                                                                                                 |
+| `--use-defaults`              | replace missing properties/items with the values from default keyword                                                                                           |
+| `--coerce-types`              | change type of data to match type keyword                                                                                                                       |
+| Advanced                      |
+| `--multiple-of-precision`     | precision of multipleOf, pass integer number                                                                                                                    |
+| `--messages=false`            | do not include text messages in errors                                                                                                                          |
+| `--loop-required=`            | max size of `required` to compile to expression (rather than to loop)                                                                                           |
+| `--loop-enum=`                | max size of `enum` to compile to expression (rather than to loop)                                                                                               |
+| `--own-properties`            | only validate own properties (not relevant for JSON, but can have effect for JavaScript objects)                                                                |
+| Code generation               |
+| `--code-es5`                  | generate ES5 code                                                                                                                                               |
+| `--code-lines`                | generate multi-line code                                                                                                                                        |
+| `--code-optimize=`            | disable optimization (`false`) or number of optimization passes (1 pass by default)                                                                             |
+| `--code-formats=`             | code to require formats object (only needed if you generate standalone code and do not use [ajv-formats](https://github.com/ajv-validator/ajv-formats))         |
 
 Options can be passed using either dash-case or camelCase.
 
