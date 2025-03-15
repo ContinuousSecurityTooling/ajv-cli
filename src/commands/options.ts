@@ -15,6 +15,7 @@ const ajvOptions: SchemaMap = {
   allowMatchingProperties: {type: "boolean"},
   allowUnionTypes: {type: "boolean"},
   validateFormats: {type: "boolean"},
+  unicodeRegExp: {type: "boolean"},
   data: {type: "boolean"},
   allErrors: {type: "boolean"},
   verbose: {type: "boolean"},
