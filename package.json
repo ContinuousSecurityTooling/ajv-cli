@@ -3,7 +3,8 @@
   "version": "5.0.0",
   "description": "Command line interface for Ajv JSON schema validator",
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "clean": "rimraf dist && npm ci",
+    "build": "tsc",
     "lint": "eslint \"src/**/*.*s\" \"test/**/*.js\"",
     "prettier:write": "prettier --write \"./**/*.{json,yaml,js,ts}\"",
     "prettier:check": "prettier --list-different \"./**/*.{json,yaml,js,ts}\"",

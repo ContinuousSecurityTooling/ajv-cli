@@ -25,7 +25,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install
+
+      - name: npm build and test
+        run: |
+          npm run clean
+          npm run build
+          npm run test
       - run: npm test
       - name: Coveralls
         uses: coverallsapp/github-action@master
