@@ -10,7 +10,7 @@
     "prettier:check": "prettier --list-different \"./**/*.{json,yaml,js,ts}\"",
     "test-spec": "cross-env TS_NODE_PROJECT=test/tsconfig.json mocha -r ts-node/register \"test/**/*.spec.{ts,js}\" -R spec",
     "test-cov": "nyc npm run test-spec",
-    "test": "npm run build && npm run eslint && npm run test-cov"
+    "test": "npm run lint && npm run test-cov"
   },
   "nyc": {
     "exclude": [
