@@ -16,11 +16,13 @@ COPY dist/ docker_entrypoint.sh package-lock.json package.json /app
 WORKDIR /app
 
 RUN npm install --omit=dev &&\
-    npm install -g ajv-formats &&\
-    chown -R 1000:2000 /app
+    npm install ajv-formats &&\
+    ln -s /app/index.js /usr/local/bin/ajv-cli && chmod +x /usr/local/bin/ajv-cli &&\
+    chown -R 1000:2000 /app /usr/local/bin/ajv-cli
 
 # apt update
 RUN apt-get update && apt-get -y upgrade &&\
+  apt-get install -y jq wget curl &&\
   # clean up to slim image
   apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
