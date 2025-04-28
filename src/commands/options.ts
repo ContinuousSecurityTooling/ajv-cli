@@ -23,6 +23,7 @@ const ajvOptions: SchemaMap = {
   loopRequired: {type: "integer"},
   loopEnum: {type: "integer"},
   ownProperties: {type: "boolean"},
+  unicodeRegExp: {type: "boolean"},
   multipleOfPrecision: boolOrNat,
   messages: {type: "boolean"},
   [`${CODE}es5`]: {type: "boolean"},
