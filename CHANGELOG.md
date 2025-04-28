@@ -1,3 +1,14 @@
+## [0.2.1](https://github.com/ContinuousSecurityTooling/ajv-cli/compare/v0.2.0...v0.2.1) (2025-04-28)
+
+
+### Bug Fixes
+
+* **CLI:** Allow regex CLI option ([934bbab](https://github.com/ContinuousSecurityTooling/ajv-cli/commit/934bbabbec9fa8b7c432535d23e13b0a8e9208ac))
+* **deps:** update dependency glob to v11.0.2 ([be448f8](https://github.com/ContinuousSecurityTooling/ajv-cli/commit/be448f8cacae185ee5b4341ce9db1eb033d33102))
+* **Gitlab:** Correcting support for JSON 2020 Draft with Regex ([0697793](https://github.com/ContinuousSecurityTooling/ajv-cli/commit/06977932f68d8027d38e8211764a4b9becfff999))
+
+
+
 # 0.2.0 (2025-04-09)
 
 
