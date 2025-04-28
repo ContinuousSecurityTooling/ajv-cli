@@ -52,27 +52,13 @@ jobs:
           npm run clean
           npm run build
 
-      - name: Write version vars
+      - name: Test Container Image
+        id: test-image
         run: |
-          BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
-          BRANCH=${GITHUB_REF_NAME#v}
-          APP_VERSION=$(cat package.json | grep version| head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')
-          echo Version: $APP_VERSION
-          echo "VERSION=$APP_VERSION" >> $GITHUB_ENV
-          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
-          echo "BUILD_DATE=$BUILD_DATE" >> $GITHUB_ENV
-
-      - name: Build Container Image
-        id: build-image
-        uses: redhat-actions/buildah-build@v2
-        with:
-          image: continuoussecuritytooling/ajv-cli
-          tags: "latest next ${{env.APP_VERSION}} ${{env.APP_VERSION}}_rc"
-          containerfiles: |
-            ./Dockerfile
-          build-args: |
-            BUILD_DATE=${{env.BUILD_DATE}}
-            APP_VERSION=${{env.APP_VERSION}}
+          docker build -t continuoussecuritytooling/ajv-cli:${{github.run_number}} .
+          wget https://gitlab.com/gitlab-org/gitlab/-/raw/master/ee/app/validators/json_schemas/security_orchestration_policy.json
+          docker run -u 0 -v $(pwd):/build continuoussecuritytooling/ajv-cli:${{github.run_number}} migrate --spec=draft2020 -s /build/security_orchestration_policy.json
+          docker run -u 0 -v $(pwd):/build continuoussecuritytooling/ajv-cli:${{github.run_number}} validate --spec=draft2020 --strict=false --validate-formats=true  -c ajv-formats --unicodeRegExp=false -s /build/security_orchestration_policy.json -d /build/test/gitlab/policy.yml
 
   build-results:
     name: Build results
