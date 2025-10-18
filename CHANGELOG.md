@@ -1,3 +1,12 @@
+## [0.2.2](https://github.com/ContinuousSecurityTooling/ajv-cli/compare/v0.2.1...v0.2.2) (2025-10-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency glob to v11.0.3 ([619049a](https://github.com/ContinuousSecurityTooling/ajv-cli/commit/619049a4d4036c867fe44b984339e5e2b1f0d011))
+
+
+
 ## [0.2.1](https://github.com/ContinuousSecurityTooling/ajv-cli/compare/v0.2.0...v0.2.1) (2025-04-28)
 
 
