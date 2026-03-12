@@ -23,7 +23,7 @@ export function getFiles(args: string | string[]): string[] {
 }
 
 function getFormatFromFileName(filename: string): string {
-  return path.extname(filename).substr(1).toLowerCase()
+  return path.extname(filename).substring(1).toLowerCase()
 }
 
 function decodeFile(contents: string, format: string): any {

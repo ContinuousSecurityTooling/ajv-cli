@@ -1,5 +1,5 @@
 import cli from "./cli"
-import assert = require("assert")
+import assert from "assert"
 import type {DefinedError} from "ajv"
 
 describe("validate", function () {

@@ -1,7 +1,7 @@
 import cli from "./cli"
-import assert = require("assert")
-import fs = require("fs")
-import path = require("path")
+import assert from "assert"
+import * as fs from "fs"
+import * as path from "path"
 import {AnySchemaObject} from "ajv"
 
 describe("migrate", function () {

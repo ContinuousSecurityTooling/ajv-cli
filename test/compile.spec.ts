@@ -1,7 +1,7 @@
 import type {ExecException} from "child_process"
 import cli from "./cli"
-import assert = require("assert")
-import fs = require("fs")
+import assert from "assert"
+import * as fs from "fs"
 
 describe("compile", function () {
   this.timeout(10000)
