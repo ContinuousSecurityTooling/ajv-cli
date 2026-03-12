@@ -44,7 +44,7 @@ export default function (argv: ParsedArgs): AjvCore {
   function addSchemas(
     args: string | string[] | undefined,
     method: AjvMethod,
-    fileType: string
+    fileType: string,
   ): void {
     if (!args) return
     const files = util.getFiles(args)
@@ -88,7 +88,7 @@ export default function (argv: ParsedArgs): AjvCore {
       /* istanbul ignore next */
       if (err.code === "MODULE_NOT_FOUND") {
         throw new Error(
-          `'ts-node' is required for the TypeScript configuration files. Make sure it is installed\nError: ${err.message}`
+          `'ts-node' is required for the TypeScript configuration files. Make sure it is installed\nError: ${err.message}`,
         )
       }
 
