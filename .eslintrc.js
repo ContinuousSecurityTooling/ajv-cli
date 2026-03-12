@@ -18,6 +18,8 @@ module.exports = {
     },
     {
       ...tsConfig,
+      // "prettier/@typescript-eslint" was merged into "prettier" in eslint-config-prettier v8
+      extends: [...(tsConfig.extends || []).filter((e) => e !== "prettier/@typescript-eslint"), "prettier"],
       files: ["*.ts"],
       rules: {
         ...tsConfig.rules,
@@ -28,6 +30,7 @@ module.exports = {
         "@typescript-eslint/no-unsafe-call": "off",
         "@typescript-eslint/no-unsafe-member-access": "off",
         "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
         "@typescript-eslint/no-var-requires": "off",
         "@typescript-eslint/restrict-template-expressions": "off",
       },
