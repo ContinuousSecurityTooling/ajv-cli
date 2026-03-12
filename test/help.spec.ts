@@ -1,5 +1,5 @@
 import cli from "./cli"
-import assert = require("assert")
+import assert from "assert"
 
 describe("help", function () {
   this.timeout(10000)
