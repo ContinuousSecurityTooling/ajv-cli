@@ -1,6 +1,6 @@
 import cli from "./cli"
 import assert from "assert"
-import type {DefinedError} from "ajv"
+import type {ErrorObject} from "ajv"
 
 describe("validate", function () {
   this.timeout(10000)
@@ -369,10 +369,10 @@ function assertRequiredErrors(stderr: string, schemaRef = "#", count = 1): void 
   })
 }
 
-function assertErrors(stderr: string, count = 1): DefinedError[][] {
+function assertErrors(stderr: string, count = 1): ErrorObject[][] {
   const lines = stderr.split("\n")
   assert.strictEqual(lines.length, count * 2 + 1)
-  const results: DefinedError[][] = []
+  const results: ErrorObject[][] = []
   for (let i = 0; i < count; i += 2) {
     assert(/\sinvalid/.test(lines[i]))
     const errors = JSON.parse(lines[i + 1])
