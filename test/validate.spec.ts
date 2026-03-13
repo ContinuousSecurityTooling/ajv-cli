@@ -242,6 +242,68 @@ describe("validate", function () {
     })
   })
 
+  describe('option "errors" code-climate', () => {
+    it("should output valid CodeClimate JSON for invalid data", (done) => {
+      cli(
+        "-s test/schema.json -d test/invalid_data.json --errors=code-climate",
+        (error, stdout, stderr) => {
+          assert(error instanceof Error)
+          assert(stderr.includes("invalid"))
+          const issues = JSON.parse(stdout)
+          assert(Array.isArray(issues))
+          assert(issues.length > 0)
+          const issue = issues[0]
+          assert.strictEqual(typeof issue.description, "string")
+          assert.strictEqual(issue.check_name, "json-schema")
+          assert.strictEqual(typeof issue.fingerprint, "string")
+          assert.strictEqual(issue.fingerprint.length, 40)
+          assert.strictEqual(issue.severity, "major")
+          assert.strictEqual(typeof issue.location.path, "string")
+          assert.strictEqual(typeof issue.location.lines.begin, "number")
+          done()
+        }
+      )
+    })
+
+    it("should produce no issues for valid data", (done) => {
+      cli(
+        "-s test/schema.json -d test/valid_data.json --errors=code-climate",
+        (error, stdout, stderr) => {
+          assert.strictEqual(error, null)
+          assert(stdout.includes("valid"))
+          assert.strictEqual(stderr, "")
+          done()
+        }
+      )
+    })
+
+    it("should include the file path in the location", (done) => {
+      cli(
+        "-s test/schema.json -d test/invalid_data.json --errors=code-climate",
+        (error, stdout, _stderr) => {
+          assert(error instanceof Error)
+          const issues = JSON.parse(stdout)
+          assert(issues[0].location.path.includes("invalid_data"))
+          done()
+        }
+      )
+    })
+
+    it("should produce unique fingerprints per error", (done) => {
+      cli(
+        "-s test/schema.json -d test/invalid_data.json --errors=code-climate --all-errors",
+        (error, stdout, _stderr) => {
+          assert(error instanceof Error)
+          const issues = JSON.parse(stdout)
+          const fingerprints = issues.map((i: {fingerprint: string}) => i.fingerprint)
+          const unique = new Set(fingerprints)
+          assert.strictEqual(fingerprints.length, unique.size)
+          done()
+        }
+      )
+    })
+  })
+
   describe('option "changes"', () => {
     it("should log changes in the object after validation", (done) => {
       cli(

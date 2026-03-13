@@ -3,6 +3,21 @@ import type {ParsedArgs} from "minimist"
 import {compile, getFiles, openFile, logJSON} from "./util"
 import getAjv from "./ajv"
 import * as jsonPatch from "fast-json-patch"
+import {createHash} from "crypto"
+import type {ErrorObject} from "ajv"
+
+// https://docs.gitlab.com/ee/ci/testing/code_quality.html#implement-a-custom-tool
+// https://github.com/codeclimate/platform/blob/master/spec/analyzers/SPEC.md#data-types
+interface CodeClimateIssue {
+  description: string
+  check_name: string
+  fingerprint: string
+  severity: "info" | "minor" | "major" | "critical" | "blocker"
+  location: {
+    path: string
+    lines: {begin: number}
+  }
+}
 
 const cmd: Command = {
   execute,
@@ -18,7 +33,7 @@ const cmd: Command = {
       r: {$ref: "#/$defs/stringOrArray"},
       m: {$ref: "#/$defs/stringOrArray"},
       c: {$ref: "#/$defs/stringOrArray"},
-      errors: {enum: ["json", "line", "text", "js", "no"]},
+      errors: {enum: ["json", "line", "text", "js", "no", "code-climate"]},
       changes: {enum: [true, "json", "line", "js"]},
       spec: {enum: ["draft7", "draft2019", "draft2020", "jtd"]},
     },
@@ -27,6 +42,27 @@ const cmd: Command = {
 }
 
 export default cmd
+
+function formatCodeClimate(file: string, errors: ErrorObject[]): string {
+  const issues: CodeClimateIssue[] = errors.map((err) => {
+    const instancePath = err.instancePath || "/"
+    const message = err.message || "validation error"
+    const fingerprint = createHash("sha1")
+      .update(`${file}\0${instancePath}\0${message}`)
+      .digest("hex")
+    return {
+      description: `[schema] #${instancePath} ${message}`,
+      check_name: "json-schema",
+      fingerprint,
+      severity: "major",
+      location: {
+        path: file,
+        lines: {begin: 1},
+      },
+    }
+  })
+  return JSON.stringify(issues, null, "  ")
+}
 
 function execute(argv: ParsedArgs): boolean {
   const ajv = getAjv(argv)
@@ -54,7 +90,11 @@ function execute(argv: ParsedArgs): boolean {
       }
     } else {
       console.error(file, "invalid")
-      console.error(logJSON(argv.errors, validate.errors, ajv))
+      if (argv.errors === "code-climate") {
+        console.log(formatCodeClimate(file, validate.errors as ErrorObject[]))
+      } else {
+        console.error(logJSON(argv.errors, validate.errors, ajv))
+      }
     }
     return validData
   }
