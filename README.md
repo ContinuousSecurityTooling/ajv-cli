@@ -3,10 +3,9 @@
 Command line interface for [ajv](https://github.com/epoberezkin/ajv), one of the [fastest json schema validators](https://github.com/ebdrup/json-schema-benchmark).
 Supports [JSON](http://json.org/), [JSON5](http://json5.org/), and [YAML](http://yaml.org/).
 
-[![build](https://github.com/ajv-validator/ajv-cli/workflows/build/badge.svg)](https://github.com/ajv-validator/ajv-cli/actions?query=workflow%3Abuild)
-[![npm](https://img.shields.io/npm/v/ajv-cli.svg)](https://www.npmjs.com/package/ajv-cli)
-[![coverage](https://coveralls.io/repos/github/ajv-validator/ajv-cli/badge.svg?branch=master)](https://coveralls.io/github/ajv-validator/ajv-cli?branch=master)
-[![gitter](https://img.shields.io/gitter/room/ajv-validator/ajv.svg)](https://gitter.im/ajv-validator/ajv)
+[![build](https://github.com/ContinuousSecurityTooling/ajv-cli/actions/workflows/build.yml/badge.svg)](https://github.com/ContinuousSecurityTooling/ajv-cli/actions/workflows/build.yml)
+[![NPM Version](https://img.shields.io/npm/v/:packageName)](https://www.npmjs.com/package/@continuoussecuritytooling/ajv-cli)
+[![Coverage Status](https://coveralls.io/repos/github/ContinuousSecurityTooling/ajv-cli/badge.svg?branch=develop)](https://coveralls.io/github/ContinuousSecurityTooling/ajv-cli?branch=develop)
 
 - [ajv-cli](#ajv-cli)
   - [Installation](#installation)
@@ -153,6 +152,7 @@ For example, you can use `-c ajv-keywords` to add all keywords from [ajv-keyword
 
   - `js` (default): JavaScript object
   - `json`: JSON with indentation and line-breaks
+  - `code-climate` emits a JSON array of CodeClimate issues to **stdout** (for easy pipe/redirect to a file). Stderr still receives the `<file> invalid` message.
   - `line`: JSON without indentation/line-breaks (for easy parsing)
   - `text`: human readable error messages with data paths
 
