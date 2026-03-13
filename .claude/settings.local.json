@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r \"import.*from.*src\" /Users/mreinhardt/git/job/ajv-cli/test/*.spec.ts)",
+      "Bash(node -e \"const g = require\\(''glob''\\); console.log\\(Object.keys\\(g\\)\\)\")",
+      "Bash(node -e \"const g = require\\(''glob''\\); console.log\\(typeof g.hasMagic, typeof g.sync, typeof g.globSync, typeof g.default\\)\")",
+      "Bash(npm run:*)",
+      "Bash(node -e \"const y = require\\(''js-yaml''\\); console.log\\(typeof y.safeLoad, typeof y.load\\)\")",
+      "Bash(ls /Users/mreinhardt/git/job/ajv-cli/.mocha*)",
+      "Bash(node_modules/.bin/mocha --version)",
+      "Bash(node_modules/.bin/ts-node --version)",
+      "Bash(node -e \"const p = require\\(''./node_modules/eslint-plugin-prettier/package.json''\\); console.log\\(''eslint-plugin-prettier:'', p.version, ''\\\\npeerDeps:'', JSON.stringify\\(p.peerDependencies\\)\\)\")",
+      "Bash(node -e \"console.log\\(''eslint:'', require\\(''./node_modules/eslint/package.json''\\).version, ''\\\\nprettier:'', require\\(''./node_modules/prettier/package.json''\\).version\\)\")",
+      "Bash(node -e \"const c = require\\(''./node_modules/@ajv-validator/config/package.json''\\); console.log\\(''version:'', c.version, ''\\\\npeerDeps:'', JSON.stringify\\(c.peerDependencies,null,2\\)\\)\")",
+      "Bash(npm install:*)",
+      "Bash(node -e \"const c = require\\(''@ajv-validator/config/.eslintrc''\\); console.log\\(JSON.stringify\\(c,null,2\\)\\)\")",
+      "Bash(npx eslint:*)",
+      "Bash(npx tsc:*)",
+      "Bash(grep -r code- node_modules/ajv/dist/ --include=*.d.ts)",
+      "Bash(node -e \"console.log\\(require\\(''./node_modules/@types/node/package.json''\\).version\\)\")",
+      "Bash(grep -rn [.*] node_modules/glob/dist/commonjs/pattern.d.ts node_modules/glob/dist/mjs/pattern.d.ts)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(npm view:*)",
+      "Bash(node -e \"const p = require\\(''./node_modules/@types/node/package.json''\\); console.log\\(JSON.stringify\\(p.typesVersions, null, 2\\)\\)\")",
+      "Bash(node -e \"console.log\\(require\\(''./node_modules/typescript/package.json''\\).version\\)\")",
+      "Bash(grep -n \"keyword.*typeof\\\\|TypeofError\\\\|typeof.*Error\" node_modules/ajv-keywords/dist/ -r --include=*.d.ts)",
+      "Bash(node:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(gh api:*)",
+      "Bash(grep -n 'option \"\"errors\"\"\\\\|errors.*format\\\\|--errors\\\\|errors=' /Users/mreinhardt/git/job/ajv-cli/test/validate.spec.ts)"
+    ]
+  }
+}
