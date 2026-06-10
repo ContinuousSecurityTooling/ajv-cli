@@ -75,7 +75,6 @@
       "optional": true
     }
   },
-  "prettier": "@ajv-validator/config/prettierrc.json",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged && npm test"
