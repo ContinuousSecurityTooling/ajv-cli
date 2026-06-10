@@ -1,3 +1,17 @@
+## [0.2.3](https://github.com/ContinuousSecurityTooling/ajv-cli/compare/v0.2.2...v0.2.3) (2026-06-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency glob to v13 ([d64affc](https://github.com/ContinuousSecurityTooling/ajv-cli/commit/d64affc0b39a3fd020d5563f35f67afe0d53fd55))
+
+
+### Features
+
+* Adding CodeClimate Output ([f4eb390](https://github.com/ContinuousSecurityTooling/ajv-cli/commit/f4eb39032e0ae8846a470b5e237d7f0dcbd9db85)), closes [#7](https://github.com/ContinuousSecurityTooling/ajv-cli/issues/7)
+
+
+
 ## [0.2.2](https://github.com/ContinuousSecurityTooling/ajv-cli/compare/v0.2.1...v0.2.2) (2025-10-18)
 
 

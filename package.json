@@ -1,6 +1,6 @@
 {
   "name": "@continuoussecuritytooling/ajv-cli",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Command line interface for Ajv JSON schema validator",
   "scripts": {
     "clean": "npm ci && rimraf dist",
