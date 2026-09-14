@@ -1,3 +1,12 @@
+# [1.0.0](https://github.com/ContinuousSecurityTooling/ajv-cli/compare/v0.2.3...v1.0.0) (2026-09-14)
+
+
+### Features
+
+* Adding https support ([266e40f](https://github.com/ContinuousSecurityTooling/ajv-cli/commit/266e40fd542e3dc6bfabf0886a9a2fbbe90e037b)), closes [#47](https://github.com/ContinuousSecurityTooling/ajv-cli/issues/47)
+
+
+
 ## [0.2.3](https://github.com/ContinuousSecurityTooling/ajv-cli/compare/v0.2.2...v0.2.3) (2026-06-10)
 
 
