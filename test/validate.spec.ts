@@ -194,6 +194,32 @@ describe("validate", function () {
     })
   })
 
+  describe("validate schema with https draft-07 $schema", () => {
+    it("should validate valid data", (done) => {
+      cli(
+        "-s test/https_draft07/schema -d test/https_draft07/valid_data",
+        (error, stdout, stderr) => {
+          assert.strictEqual(error, null)
+          assertValid(stdout, 1)
+          assert.strictEqual(stderr, "")
+          done()
+        }
+      )
+    })
+
+    it("should validate invalid data", (done) => {
+      cli(
+        "-s test/https_draft07/schema -d test/https_draft07/invalid_data --errors=line",
+        (error, stdout, stderr) => {
+          assert(error instanceof Error)
+          assert.strictEqual(stdout, "")
+          assert.ok(/must be string/.exec(stderr))
+          done()
+        }
+      )
+    })
+  })
+
   describe("validate with schema using added meta-schema", () => {
     it("should validate valid data", (done) => {
       cli(
